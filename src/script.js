@@ -7,6 +7,9 @@ async function fetchWeather() {
     return;
   }
 
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+
   const apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=XVAXY2LJBEMKGP79PD92B9B26&include=current&unitGroup=metric&lang=en&tz=Asia/Kolkata`;
 
   try {
@@ -15,6 +18,8 @@ async function fetchWeather() {
   } catch (error) {
     console.error(error);
     alert("Weather data could not be fetched. Please try again later.");
+  } finally {
+    loader.style.display = "none";
   }
 }
 
@@ -30,18 +35,17 @@ function displayWeather(data) {
   console.log(data);
 
   const locationName = data.address;
-
   const condition = data.currentConditions.conditions;
   const feelsLike = data.currentConditions.feelslike;
   const address = data.resolvedAddress;
   const humidity = data.currentConditions.humidity;
+
   newWeatherContainer.innerHTML = `
         <h4>Weather in ${locationName}</h4>
         <h5>Condition: ${condition}</h5>
-        <h5>humidity: ${humidity}°C</h5>
-        <h5>feels like : ${feelsLike}°C</h5>
-       <h5>Location : ${address}</h5>
-
+        <h5>Humidity: ${humidity}%</h5>
+        <h5>Feels like: ${feelsLike}°C</h5>
+        <h5>Location: ${address}</h5>
     `;
 }
 
